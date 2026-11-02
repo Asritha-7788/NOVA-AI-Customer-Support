@@ -1,14 +1,17 @@
-
 import os
+import streamlit as st
 from dotenv import load_dotenv
-from google import genai
 
 load_dotenv()
 
-API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = (
+    st.secrets.get("GEMINI_API_KEY")
+    if hasattr(st, "secrets")
+    else None
+) or os.getenv("GEMINI_API_KEY")
 
-if not API_KEY:
-    raise ValueError("Gemini API key is missing in .env")
+if not GEMINI_API_KEY:
+    raise ValueError("Gemini API key is missing")
 
 client = genai.Client(api_key=API_KEY)
 
